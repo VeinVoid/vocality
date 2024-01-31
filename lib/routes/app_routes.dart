@@ -6,4 +6,6 @@ abstract class Route{
 abstract class Path{
   Path._();
   static const SPLASHSCREEN_PAGE = "/";
+  static const HOME_PAGE = "/home";
+  static const MUISC_PLAYER_PAGE = "/music_player";
 }
