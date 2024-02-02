@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vocality/global/controllers/music_controller.dart';
+import 'package:vocality/global/widgets/playing_music_cart.dart';
 import 'package:vocality/views/home_page/components/home_component_one.dart';
 import 'package:vocality/views/home_page/components/home_component_two.dart';
 
@@ -24,14 +25,20 @@ class HomePage extends StatelessWidget {
               vertical: height * 0.05
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 HomeComponentOne(),
                 SizedBox(
                   height: height * 0.03,
                 ),
                 HomeComponentTwo(
+                  statusConnection : musicController.isConnectedInternet.value,
                   musicData: musicController.musicDataList
                 ),
+                playingMusicCard(
+                  height: height,
+                  width: width
+                )
               ],
             ),
           ),
