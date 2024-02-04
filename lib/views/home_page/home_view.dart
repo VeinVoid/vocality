@@ -31,14 +31,10 @@ class HomePage extends StatelessWidget {
                 SizedBox(
                   height: height * 0.03,
                 ),
-                HomeComponentTwo(
+                Obx(() => HomeComponentTwo(
                   statusConnection : musicController.isConnectedInternet.value,
                   musicData: musicController.musicDataList
-                ),
-                playingMusicCard(
-                  height: height,
-                  width: width
-                )
+                )),
               ],
             ),
           ),

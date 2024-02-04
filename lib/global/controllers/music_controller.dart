@@ -24,20 +24,19 @@ class MusicController extends GetxController {
       final connectivityResult = await (Connectivity().checkConnectivity());
       if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
         isConnectedInternet.value = true;
+        musicDataList.clear();
         final List<MusicData> data = await musicService.fetchMusicData();
         musicDataList.assignAll(data);
         addMusicDataToLocalDatabase();
       }
       else if (connectivityResult == ConnectivityResult.none) {
         isConnectedInternet.value = false;
+        musicDataList.clear();
         MusicDatabase().getMusics().then((value) {
           for (MusicDataLocal musicDataLocal in value) {
             musicDataList.assignAll(value);
-
-            print("ID: ${musicDataLocal.id_music}, Title: ${musicDataLocal.title}, Cover Path: ${musicDataLocal.cover}");
           }
         });
-        print("doesn't have internet");
       }
     } catch (e) {
       print('Error fetching music data: $e');

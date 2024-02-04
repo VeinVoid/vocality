@@ -28,6 +28,9 @@ class ImageController extends GetxController {
     ref.writeFromSync(response.data);
     await ref.close();
 
+    print(file);
+    print(file.path);
+
     return file;
   }
 }

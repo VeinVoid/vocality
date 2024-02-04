@@ -77,7 +77,7 @@ class HomeComponentTwo extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
                           child: !statusConnection ? Image.file(
-                            File('/data/user/0/com.example.vocality/app_flutter/Cover/Ada.png'),
+                            File(musicData[index].cover),
                             fit: BoxFit.cover,
                           ) : Image.network(
                             musicData[index].cover,
@@ -145,49 +145,60 @@ class HomeComponentTwo extends StatelessWidget {
                       left: index > 0 ? width * 0.05 : 0,
                     ),
                     height: height,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                    child:GestureDetector(
+                      onLongPress: () => Get.bottomSheet(
                         Container(
-                          margin: EdgeInsets.only(
-                            top: height * 0.01
-                          ),
-                          width: width * 0.3,
-                          height: height * 0.14,
-                          decoration: dnCircular(
-                            radiusCircular: 5, 
-                            colorCircular: Colors.black12
-                          ),
-                          child: !statusConnection ? Image.file(
-                            File(shuffledMusicData[index].cover),
-                            fit: BoxFit.cover,
-                          ) : Image.network(
-                            musicData[index].cover,
-                            fit: BoxFit.fill,
+                          child: Text(
+                            "p"
                           ),
                         ),
-                        Container(
-                          width: width * 0.3,
-                          height: height * 0.025,
-                          margin: EdgeInsets.only(
-                            top: height * 0.01
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                              top: height * 0.01
+                            ),
+                            width: width * 0.3,
+                            height: height * 0.14,
+                            decoration: dnCircular(
+                              radiusCircular: 5, 
+                              colorCircular: Colors.black12
+                            ),
+                            child: !statusConnection ? Image.file(
+                              File(shuffledMusicData[index].cover),
+                              fit: BoxFit.cover,
+                            ) : Image.network(
+                              musicData[index].cover,
+                              fit: BoxFit.fill,
+                            ),
                           ),
-                          child: Text(
-                            shuffledMusicData[index].title,
-                            overflow: TextOverflow.ellipsis,
-                            style: tsGeneral14(
+                          Container(
+                            width: width * 0.3,
+                            height: height * 0.025,
+                            margin: EdgeInsets.only(
+                              top: height * 0.01
+                            ),
+                            child: Text(
+                              shuffledMusicData[index].title,
+                              overflow: TextOverflow.ellipsis,
+                              style: tsGeneral14(
+                                isHaighlight: true
+                              ),
+                            ),
+                          ),
+                          Text(
+                            shuffledMusicData[index].artist_name,
+                            style: tsGeneral12(
                               isHaighlight: true
                             ),
                           ),
-                        ),
-                        Text(
-                          shuffledMusicData[index].artist_name,
-                          style: tsGeneral12(
-                            isHaighlight: true
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -238,7 +249,7 @@ class HomeComponentTwo extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
                           child: !statusConnection ? Image.file(
-                            File('/data/user/0/com.example.vocality/app_flutter/Cover/Ada.png'),
+                            File(musicData[index].cover),
                             fit: BoxFit.cover,
                           ) : Image.network(
                             musicData[index].cover,
