@@ -55,9 +55,11 @@ class MusicController extends GetxController {
 
   Future<void> addMusicDataToLocalDatabase() async {
     MusicDatabase().clearMusic();
+    List shuffledMusicData = List.from(musicDataList);
+    shuffledMusicData.shuffle();
 
     for (var i = 0; i < 3; i++) {
-      var musicData = musicDataList[i];
+      var musicData = shuffledMusicData[i];
       File imageFile = await ImageController().downloadAndSaveImage(musicData.cover, musicData.title + '.png');
         
       MusicDataLocal musicDataLocal = MusicDataLocal(

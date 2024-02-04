@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:vocality/global/database/FavouriteDatabase.dart';
 import 'package:vocality/global/helper/ImageDownloader.dart';
 import 'package:vocality/model/FavouriteModel.dart';
