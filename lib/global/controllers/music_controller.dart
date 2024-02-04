@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
+import 'package:vocality/global/database/FavouriteDatabase.dart';
 import 'package:vocality/global/database/MusicDatabase.dart';
 import 'package:vocality/global/helper/ImageDownloader.dart';
 import 'package:vocality/model/FavouriteModel.dart';
@@ -12,11 +12,12 @@ class MusicController extends GetxController {
   final MusicService musicService = MusicService();
   RxBool isConnectedInternet = false.obs;
   RxList<dynamic> musicDataList = <dynamic>[].obs;
-  RxList<FavouriteData> favouriteDataList = <FavouriteData>[].obs;
+  RxList<dynamic> favouriteDataList = <dynamic>[].obs;
 
   onInit() {
     super.onInit();
     fetchMusicData();
+    getFavouriteData();
   }
 
   Future<void> fetchMusicData() async {
@@ -43,7 +44,18 @@ class MusicController extends GetxController {
     }
   }
 
+  Future<void> getFavouriteData() async {
+    FavouriteDatabase().getFavourites().then((value) {
+      for (FavouriteData favouriteData in value) {
+        favouriteDataList.assignAll(value);
+        print(favouriteData.cover);
+      }
+    });
+  }
+
   Future<void> addMusicDataToLocalDatabase() async {
+    MusicDatabase().clearMusic();
+
     for (var i = 0; i < 3; i++) {
       var musicData = musicDataList[i];
       File imageFile = await ImageController().downloadAndSaveImage(musicData.cover, musicData.title + '.png');
@@ -52,7 +64,11 @@ class MusicController extends GetxController {
         id_music: musicData.id_music,
         title: musicData.title,
         artist_name: musicData.artist_name,
+        genre: musicData.genre,
+        duration: musicData.duration,
+        release: musicData.release,
         cover: imageFile.path,
+        music: musicData.music
       );
 
       await MusicDatabase().insertMusic(musicDataLocal);
