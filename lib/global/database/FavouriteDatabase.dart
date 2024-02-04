@@ -17,36 +17,29 @@ class FavouriteDatabase {
 
   Future<Database> initFavouriteDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'favourite.db';
+    String path = directory.path + '/favourite.db';
 
-    bool databaseExists = await databaseFactory.databaseExists(path);
-
-    if (!databaseExists) {
-      return openDatabase(
-        path,
-        version: 1,
-        onCreate: createFavouriteTable,
-      );
-      
-    } else {
-      return openDatabase(path);
-    }
-  }
-
-   Future<void> createFavouriteTable(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE favourite (
-        id_favourite INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
-        artist_name TEXT,
-        cover_path TEXT
-      )
-    ''');
+    return openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) => db.execute('''
+        CREATE TABLE favourite (
+          id_favourite INTEGER PRIMARY KEY AUTOINCREMENT,
+          title TEXT,
+          artist_name TEXT,
+          genre TEXT,
+          duration INTEGER,
+          release TEXT,
+          cover TEXT,
+          music TEXT
+        )
+      '''),
+    );
   }
 
   Future<int> insertFavourite(FavouriteData favouriteData) async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'favourite.db';
+    String path = directory.path + '/favourite.db';
     final Database db = await openDatabase(path);
 
     return await db.insert('favourite', favouriteData.toMap());
@@ -54,7 +47,7 @@ class FavouriteDatabase {
 
   Future<List<FavouriteData>> getFavourites() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'favourite.db';
+    String path = directory.path + '/favourite.db';
     final Database db = await openDatabase(path);
     final List<Map<String, dynamic>> maps = await db.query('favourite');
 
@@ -63,9 +56,23 @@ class FavouriteDatabase {
     });
   }
 
+  Future<int> updateFavourite(int id, String coverPath) async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    String path = directory.path + '/favourite.db';
+    final Database db = await openDatabase(path);
+
+    return await db.update(
+      'favourite',
+      {'cover': coverPath},
+      where: 'id_favourite = ?',
+      whereArgs: [id],
+    );
+  }
+
+
   Future<void> clearFavourite() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'favourite.db';
+    String path = directory.path + '/favourite.db';
     final Database db = await openDatabase(path);
 
     await db.delete('favourite');

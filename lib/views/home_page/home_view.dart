@@ -4,9 +4,11 @@ import 'package:vocality/global/controllers/music_controller.dart';
 import 'package:vocality/global/widgets/playing_music_cart.dart';
 import 'package:vocality/views/home_page/components/home_component_one.dart';
 import 'package:vocality/views/home_page/components/home_component_two.dart';
+import 'package:vocality/views/home_page/home_controller.dart';
 
 class HomePage extends StatelessWidget {
   final MusicController musicController = Get.put(MusicController());
+  final HomePageController homePageController = Get.put(HomePageController());
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,10 @@ class HomePage extends StatelessWidget {
                 ),
                 Obx(() => HomeComponentTwo(
                   statusConnection : musicController.isConnectedInternet.value,
-                  musicData: musicController.musicDataList
+                  musicData: musicController.musicDataList,
+                  favouriteData: musicController.favouriteDataList,
+                  homePageController: homePageController,
+                  musicController: musicController,
                 )),
               ],
             ),

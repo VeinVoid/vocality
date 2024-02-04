@@ -16,36 +16,29 @@ class MusicDatabase {
 
   Future<Database> initMusicDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'music.db';
+    String path = directory.path + '/music.db';
 
-    bool databaseExists = await databaseFactory.databaseExists(path);
-
-    if (!databaseExists) {
-      return openDatabase(
-        path,
-        version: 1,
-        onCreate: createMusicTable,
-      );
-      
-    } else {
-      return openDatabase(path);
-    }
-  }
-
-   Future<void> createMusicTable(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE music (
-        id_music INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
-        artist_name TEXT,
-        cover TEXT
-      )
-    ''');
+    return openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) => db.execute('''
+        CREATE TABLE IF NOT EXISTS music (
+          id_music INTEGER PRIMARY KEY AUTOINCREMENT,
+          title TEXT,
+          artist_name TEXT,
+          genre TEXT,
+          duration INTEGER,
+          release TEXT,
+          cover TEXT,
+          music TEXT
+        )
+      '''),
+    );
   }
 
   Future<int> insertMusic(MusicDataLocal musicData) async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'music.db';
+    String path = directory.path + '/music.db';
     final Database db = await openDatabase(path);
     
     List<Map<String, dynamic>> existingData = await db.query('music');
@@ -58,7 +51,7 @@ class MusicDatabase {
 
   Future<List<MusicDataLocal>> getMusics() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'music.db';
+    String path = directory.path + '/music.db';
     final Database db = await openDatabase(path);
     final data = await db.query('music');
     List<MusicDataLocal> musicData = data.map((e) => MusicDataLocal.fromJson(e)).toList();
@@ -69,7 +62,7 @@ class MusicDatabase {
   Future<void> clearMusic() async {
     Directory directory = await getApplicationDocumentsDirectory();
     final coverDirectory = Directory('${directory.path}/Cover');
-    String path = directory.path + 'music.db';
+    String path = directory.path + '/music.db';
     final Database db = await openDatabase(path);
     
     await db.delete('music');
