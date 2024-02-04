@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vocality/global/controllers/music_controller.dart';
-import 'package:vocality/global/widgets/playing_music_cart.dart';
 import 'package:vocality/views/home_page/components/home_component_one.dart';
 import 'package:vocality/views/home_page/components/home_component_two.dart';
 import 'package:vocality/views/home_page/home_controller.dart';
