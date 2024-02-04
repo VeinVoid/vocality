@@ -49,7 +49,7 @@ class MusicDatabase {
     final Database db = await openDatabase(path);
     
     List<Map<String, dynamic>> existingData = await db.query('music');
-    if (existingData.isNotEmpty) {
+    if (existingData.length > 3) {
       await MusicDatabase().clearMusic();
     }
     
@@ -60,11 +60,10 @@ class MusicDatabase {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + 'music.db';
     final Database db = await openDatabase(path);
-    final List<Map<String, dynamic>> maps = await db.query('music');
-
-    return List.generate(maps.length, (i) {
-      return MusicDataLocal.fromJson(maps[i]);
-    });
+    final data = await db.query('music');
+    List<MusicDataLocal> musicData = data.map((e) => MusicDataLocal.fromJson(e)).toList();
+    
+    return musicData;
   }
 
   Future<void> clearMusic() async {
